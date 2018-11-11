@@ -51,6 +51,7 @@ class Login extends Component {
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
       },
+      credentials: 'include',
       body: JSON.stringify(newUser)
     })
     .then(response => response.json())

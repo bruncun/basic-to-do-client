@@ -10,9 +10,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { todos: [] };
     this.setUser = this.setUser.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:5000/api/loggedin', {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(this.setUser)
   }
 
   render() {
@@ -48,11 +57,14 @@ class App extends Component {
               this.state.user
                 ? <Redirect to="/todos" />
                 : <Login {...props} setUser={this.setUser}/> } />
-            <Route path="/todos" render={props =>
+            <Route exact path="/todos" render={props =>
               this.state.user
-                ? <Todos {...props} />
+                ? <Todos todos={this.state.todos} />
                 : <Redirect to="/login" /> } />
-            <Route path="/todos/new" component={NewTodo} />
+            <Route path="/todos/new" render={props =>
+              this.state.user
+                ? <NewTodo user={this.state.user} />
+                : <Redirect to="/login" /> } />
             <Route path="/todos/edit" component={EditTodo} />
           </div>
         </div>
@@ -63,16 +75,19 @@ class App extends Component {
   handleLogoutClick() {
     fetch('http://localhost:5000/api/logout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      }
+      credentials: 'include'
     })
     .then(response => response.json())
-    .then(data => this.setState({ user: undefined }))
+    .then(this.setUser)
   }
 
   setUser(user) {
-    this.setState({ user });
+    debugger;
+    if (Object.keys(user).includes('username')) {
+      this.setState({ user })
+    } else {
+      this.setState({ user: undefined });
+    }
   }
 }
 
