@@ -65,7 +65,10 @@ class App extends Component {
               this.state.user
                 ? <NewTodo user={this.state.user} />
                 : <Redirect to="/login" /> } />
-            <Route path="/todos/edit" component={EditTodo} />
+            <Route path="/todos/edit/:id" render={props => 
+              this.state.user
+                ? <EditTodo {...props} />
+                : <Redirect to="/login" /> } /> 
           </div>
         </div>
       </Router>
@@ -82,7 +85,6 @@ class App extends Component {
   }
 
   setUser(user) {
-    debugger;
     if (Object.keys(user).includes('username')) {
       this.setState({ user })
     } else {

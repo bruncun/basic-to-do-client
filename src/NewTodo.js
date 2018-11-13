@@ -43,9 +43,10 @@ class NewTodo extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const newTodo = {
+    const todo = {
       title: this.state.title,
-      description: this.state.description
+      description: this.state.description,
+      doneyet: false
     }
     fetch('http://localhost:5000/api/tasks/create', {
       method: 'POST',
@@ -53,10 +54,10 @@ class NewTodo extends Component {
         'Content-Type': 'application/json; charset=utf-8'
       },
       credentials: 'include',
-      body: JSON.stringify(newTodo)
+      body: JSON.stringify(todo)
     })
     .then(response => response.json())
-    .then(todo => { debugger; this.setState({ isFormSubmitted: true }) })
+    .then(todo => this.setState({ isFormSubmitted: true }))
   }
 }
 
