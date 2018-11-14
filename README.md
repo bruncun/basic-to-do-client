@@ -1,3 +1,7 @@
+## Basic Todo Client
+
+Basic Todo Client is a simple client app for managing todos. Its companion to [Basic Todo API](https://github.com/nickborbe/basic-to-do-api) and made using React, React Router, and Bootstrap. The code is intentionally not refactored or abstracted to keep the concepts as simple as possible for instructional purposes. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
