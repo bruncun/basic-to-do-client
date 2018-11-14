@@ -4,7 +4,12 @@ import { Link, Redirect } from "react-router-dom";
 class EditTodo extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: "", description: "", doneyet: false, isFormSubmitted: false };
+    this.state = {
+      title: "",
+      description: "",
+      doneyet: false,
+      isFormSubmitted: false
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -31,7 +36,7 @@ class EditTodo extends Component {
   }
 
   render() {
-    if (this.state.isFormSubmitted) return <Redirect to="/todos" />
+    if (this.state.isFormSubmitted) return <Redirect to="/todos" />;
     return (
       <div>
         <h1 className="h3">Edit Todo</h1>
@@ -68,9 +73,7 @@ class EditTodo extends Component {
             </label>
           </div>
           <div className="form-group">
-            <button className="btn btn-primary mr-2">
-              Save
-            </button>
+            <button className="btn btn-primary mr-2">Save</button>
             <button onClick={this.handleRemove} className="btn btn-danger">
               Remove
             </button>
