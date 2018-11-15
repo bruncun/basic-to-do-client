@@ -6,6 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import Todos from "./Todos";
+import MyTudos from "./MyTudos";
 import NewTodo from "./NewTodo";
 import Container from "./Container";
 import EditTodo from "./EditTodo";
@@ -30,6 +31,7 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         this.setUser(data);
+        this.setState({ isReady: true });
         this.clearMessage();
       });
   }
@@ -37,94 +39,111 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <nav className="navbar navbar-light navbar-expand bg-light mb-3">
-            <Link to="/" className="navbar-brand mr-auto">
-              Todos
-            </Link>
-            {this.state.user && (
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link to="/todos/new" className="nav-link">
-                    New Todo
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <a href onClick={this.handleLogoutClick} className="nav-link">
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            )}
-          </nav>
-          <Container
-            message={this.state.message}
-            clearMessage={this.clearMessage}
-          >
-            <Route
-              exact
-              path="/"
-              render={props =>
-                this.state.user ? (
-                  <Redirect to="/todos" />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/signup"
-              render={props =>
-                this.state.user ? (
-                  <Redirect to="/todos" />
-                ) : (
-                  <SignUp {...props} setUser={this.setUser} />
-                )
-              }
-            />
-            <Route
-              path="/login"
-              render={props =>
-                this.state.user ? (
-                  <Redirect to="/todos" />
-                ) : (
-                  <Login {...props} setUser={this.setUser} />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/todos"
-              render={props =>
-                this.state.user ? (
-                  <Todos todos={this.state.todos} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/todos/new"
-              render={props =>
-                this.state.user ? (
-                  <NewTodo user={this.state.user} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/todos/edit/:id"
-              render={props =>
-                this.state.user ? (
-                  <EditTodo {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-          </Container>
-        </div>
+        {this.state.isReady && (
+          <div>
+            <nav className="navbar navbar-light navbar-expand bg-light mb-3">
+              <Link to="/" className="navbar-brand mr-auto">
+                Todos
+              </Link>
+              {this.state.user && (
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link to="/todos/new" className="nav-link">
+                      Add
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/todos/mine" className="nav-link">
+                      Mine
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <a href onClick={this.handleLogoutClick} className="nav-link">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              )}
+            </nav>
+            <Container
+              message={this.state.message}
+              clearMessage={this.clearMessage}
+            >
+              <Route
+                exact
+                path="/"
+                render={props =>
+                  this.state.user ? (
+                    <Redirect to="/todos" />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/signup"
+                render={props =>
+                  this.state.user ? (
+                    <Redirect to="/todos" />
+                  ) : (
+                    <SignUp {...props} setUser={this.setUser} />
+                  )
+                }
+              />
+              <Route
+                path="/login"
+                render={props =>
+                  this.state.user ? (
+                    <Redirect to="/todos" />
+                  ) : (
+                    <Login {...props} setUser={this.setUser} />
+                  )
+                }
+              />
+              <Route
+                exact
+                path="/todos"
+                render={props =>
+                  this.state.user ? (
+                    <Todos todos={this.state.todos} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/todos/mine"
+                render={props =>
+                  this.state.user ? (
+                    <MyTudos owner={this.state.user._id} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/todos/new"
+                render={props =>
+                  this.state.user ? (
+                    <NewTodo user={this.state.user} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/todos/edit/:id"
+                render={props =>
+                  this.state.user ? (
+                    <EditTodo {...props} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+            </Container>
+          </div>
+        )}
       </Router>
     );
   }
